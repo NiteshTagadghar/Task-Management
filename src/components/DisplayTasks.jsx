@@ -4,16 +4,17 @@ import { TASK_STATUS } from '../constants'
 import EditTask from './EditTask'
 
 function DisplayTasks() {
-    const { taskList, openPopup, isPopupOpen, deleteTask } = useContext(AppContext)
+    const { taskList, openPopup, isPopupOpen, deleteTask, userDetails } = useContext(AppContext)
     const [taskToEdit, setTaskToEdit] = useState()
 
     const onEditClic = (task) => {
         setTaskToEdit(task)
         openPopup()
     }
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 py-6">
-            {taskList?.map((task) => {
+            {userDetails?.tasks?.map((task) => {
                 return (
                     <div
                         key={task.id}

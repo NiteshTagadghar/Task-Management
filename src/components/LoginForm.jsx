@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from './AppContext';
 
 const LoginForm = () => {
-    const { users, getUsers } = useContext(AppContext)
+    const { users, getUsers, setUserDetails } = useContext(AppContext)
 
     const navigate = useNavigate()
 
@@ -53,6 +53,7 @@ const LoginForm = () => {
         if (isUserExist[0]) {
             localStorage.setItem('userDetails', JSON.stringify(isUserExist[0]))
             navigate("/")
+            setUserDetails(isUserExist[0])
         } else {
             alert("Given username and password doesnt match")
         }

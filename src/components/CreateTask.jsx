@@ -4,7 +4,7 @@ import { TASK_STATUS } from '../constants'
 
 function CreateTask() {
 
-    const { setTaskList } = useContext(AppContext)
+    const { setTaskList, userDetails, addTask } = useContext(AppContext)
 
 
     const handleSubmit = (e) => {
@@ -21,13 +21,14 @@ function CreateTask() {
             status: TASK_STATUS.NOT_COMPLETED
         }
 
-        // Add new record in task list
-        setTaskList((prev) => ([...prev, task]))
+        // Add new task
+        addTask(task)
 
         // Reset the input box
         e.target.reset()
 
     }
+
 
     return (
         <div className="max-w-md mx-auto mt-6 p-6 bg-white rounded-lg shadow-lg">
