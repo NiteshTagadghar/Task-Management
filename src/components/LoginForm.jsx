@@ -97,6 +97,13 @@ const LoginForm = () => {
                     >
                         Login
                     </button>
+                    <button
+                        onClick={() => navigate("/signUp")}
+                        type="button"
+                        className="w-full py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                    >
+                        Sign UP
+                    </button>
                 </form>
             </div>
         </div>

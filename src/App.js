@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import TaskDashboard from "./pages/TaskDashboard";
+import CreateUser from "./pages/CreateUser";
 
 function App() {
   useEffect(() => {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<TaskDashboard />} />
 
           <Route path="/login" element={<Login />} />
+          <Route path="/signUp" element={<CreateUser />} />
         </Routes>
       </Router>
     </div>
