@@ -4,7 +4,7 @@ import { AppContext } from './AppContext';
 
 function EditTask({ task }) {
     console.log(task, 'task in edit')
-    const { setTaskList, closePopup } = useContext(AppContext)
+    const { setTaskList, closePopup, editTask } = useContext(AppContext)
     const [formValue, setFormValue] = useState(task);
 
 
@@ -18,26 +18,11 @@ function EditTask({ task }) {
         }));
     };
 
-
-
     const onSubmit = (e) => {
         e.preventDefault();
 
-        // Update the task list array
-        setTaskList((prev) =>
-            prev.map((storedTask) => {
-
-                if (storedTask.id === task.id) {
-                    return {
-                        ...storedTask,
-                        name: formValue.name,
-                        status: formValue.status,
-                    };
-                }
-
-                return storedTask
-            })
-        );
+        const updatedTask = { ...task, name: formValue.name, status: formValue.status }
+        editTask(updatedTask)
 
         closePopup()
     };

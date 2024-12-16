@@ -5,8 +5,6 @@ export const AppContext = createContext();
 
 
 function AppProvider({ children }) {
-
-  const [taskList, setTaskList] = useState([])
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [users, setUsers] = useState(JSON.parse(localStorage.getItem('users')) || [])
   const [userDetails, setUserDetails] = useState({})
@@ -19,20 +17,41 @@ function AppProvider({ children }) {
     setUsers(JSON.parse(localStorage.getItem('users')) || [])
   }
 
-  // Delete task by id
-  const deleteTask = (task) => {
-    setTaskList((prev) => prev.filter((storedTask) => storedTask.id !== task.id))
+  // Edit task
+  const editTask = (task) => {
+
+    const allTasks = userDetails?.tasks?.map((storedTask) => {
+      if (task.id == storedTask.id) {
+        storedTask.name = task.name
+        storedTask.status = task.status
+      }
+      return storedTask
+    })
+    updateLocalStorage(allTasks)
   }
 
+  // Delete task by id
+  const deleteTask = (task) => {
+    const allTasks = userDetails.tasks.filter((storedTask) => storedTask.id !== task.id)
+    updateLocalStorage(allTasks)
+  }
+
+  // Add task in local storage (users & userDetails) and update the state as well
   const addTask = (task) => {
     const allTasks = userDetails.tasks || []
     allTasks.push(task)
+
+    updateLocalStorage(allTasks)
+  }
+
+  // Update local storage for users and userDetails
+  const updateLocalStorage = (allTasks) => {
+
+    // Update in userDetails
     const tempUserDetails = { ...userDetails }
     tempUserDetails.tasks = allTasks
-    setUserDetails(tempUserDetails)
-    console.log(tempUserDetails, 'temp user details')
 
-    // Update tasks in users array
+    // Update in users array
     const allUsers = users.map((user) => {
       if (user.id == userDetails.id) {
         user.tasks = allTasks
@@ -40,16 +59,20 @@ function AppProvider({ children }) {
       return user
     })
 
+    setUserDetails(tempUserDetails)
     localStorage.setItem('users', JSON.stringify(allUsers))
     localStorage.setItem('userDetails', JSON.stringify(tempUserDetails))
   }
+
+
 
   useEffect(() => {
     setUserDetails(JSON.parse(localStorage.getItem("userDetails")))
   }, [])
 
+  console.log(userDetails, 'user details in context')
   return (
-    <AppContext.Provider value={{ taskList, setTaskList, openPopup, closePopup, isPopupOpen, deleteTask, users, getUsers, userDetails, setUserDetails, addTask }}>
+    <AppContext.Provider value={{ openPopup, closePopup, isPopupOpen, deleteTask, users, getUsers, userDetails, setUserDetails, addTask, editTask }}>
       {children}
     </AppContext.Provider>
   )
