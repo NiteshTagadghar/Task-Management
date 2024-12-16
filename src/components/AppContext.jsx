@@ -8,9 +8,14 @@ function AppProvider({ children }) {
 
   const [taskList, setTaskList] = useState([])
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [users, setUsers] = useState(JSON.parse(localStorage.getItem('users')) || [])
 
   const openPopup = () => setIsPopupOpen(true);
   const closePopup = () => setIsPopupOpen(false);
+
+  const getUsers = () => {
+    setUsers(JSON.parse(localStorage.getItem('users')) || [])
+  }
 
   // Delete task by id
   const deleteTask = (task) => {
@@ -18,7 +23,7 @@ function AppProvider({ children }) {
   }
 
   return (
-    <AppContext.Provider value={{ taskList, setTaskList, openPopup, closePopup, isPopupOpen, deleteTask }}>
+    <AppContext.Provider value={{ taskList, setTaskList, openPopup, closePopup, isPopupOpen, deleteTask, users, getUsers }}>
       {children}
     </AppContext.Provider>
   )

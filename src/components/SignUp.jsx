@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { USER } from '../constants';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
 
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         username: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
     });
     const [errors, setErrors] = useState({
         username: "",
@@ -27,8 +29,6 @@ function SignUp() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
-        console.log(formData, 'form data in submit')
 
         if (!formData.username) {
             setErrors((prev) => ({
@@ -51,7 +51,22 @@ function SignUp() {
             }))
         }
 
+        const newUser = { id: Math.random().toString(), username: formData.username, password: formData.password }
+
+        const users = JSON.parse(localStorage.getItem('users'))
+
+
+        if (!users) {
+            const users = [newUser]
+            localStorage.setItem('users', JSON.stringify(users))
+        } else {
+            users.push(newUser)
+            localStorage.setItem('users', JSON.stringify(users))
+        }
+
+        navigate("/login")
     }
+
     return (
         <div>
             <div className="flex justify-center items-center min-h-screen bg-gray-100">

@@ -13,6 +13,11 @@ function App() {
     if (userDetails && window.location.pathname == "/login") {
       window.location.replace("/");
     }
+
+    // Redirect to login if user not signed in
+    if (!userDetails && window.location.pathname == "/") {
+      window.location.replace("/login");
+    }
   }, []);
 
   return (

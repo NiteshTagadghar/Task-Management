@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { USER } from '../constants';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from './AppContext';
 
 const LoginForm = () => {
+    const { users, getUsers } = useContext(AppContext)
+
     const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -25,7 +29,6 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form Submitted', formData);
 
         if (!formData.username) {
             setErrors((prev) => ({
@@ -43,8 +46,12 @@ const LoginForm = () => {
 
         if (!formData.password || !formData.username) return
 
-        if (formData.username === USER.USER_NAME && formData.password === USER.PASSWORD) {
-            localStorage.setItem('userDetails', JSON.stringify(formData))
+        if (!users.length) return alert("Create user first")
+
+        const isUserExist = users.filter((user) => user?.username == formData.username && user?.password == formData.password)
+
+        if (isUserExist[0]) {
+            localStorage.setItem('userDetails', JSON.stringify(isUserExist[0]))
             navigate("/")
         } else {
             alert("Given username and password doesnt match")
@@ -52,7 +59,9 @@ const LoginForm = () => {
 
     };
 
-    console.log(formData, localStorage, 'form data value')
+    useEffect(() => {
+        getUsers()
+    }, [])
 
     return (
         // =====< Classnames has been taken from tailwind already created components >=====
